@@ -58,3 +58,32 @@ def generate(width, height, verbose=True):
                 walls.add((i,j))
     
     # Prim's algorithm to knock down walls.
+    originalSize = len(spaceCells)
+    connected.add((1,1))
+    while len(connected) < len(spaceCells):
+        doA, doB = None, None
+        cns = list(connected)
+        random.shuffle(cns)
+        for (i,j) in cns:
+            if doA is not None: break
+            for A, B in adjacent((i,j)):
+                if A not in walls:
+                    continue
+                if (B not in spaceCells) or (B in connected):
+                    continue
+                doA, doB = A, B
+                break
+        A, B = doA, doB
+        maze[A] = EMPTY
+        walls.remove(A)
+        spaceCells.add(A)
+        connected.add(A)
+        connected.add(B)
+        if verbose:
+            cs, ss = len(connected), len(spaceCells)
+            cs += (originalSize - ss)
+            ss += (originalSize - ss)
+            if cs % 10 == 1:
+                print('%s/%s cells connected ...' % (cs, ss), file=sys.stderr)
+    
+    #
