@@ -30,7 +30,7 @@ def generate(width, height, verbose=True):
 
     maze = {}
 
-    spareCellse = set()
+    spaceCells = set()
     connected = set()
     walls = set()
 
@@ -43,3 +43,18 @@ def generate(width, height, verbose=True):
                 maze[(i,j)] = WALL
     
     # Fill in border.
+    for i in range(rows):
+        maze[(i,0)] = WALL
+        maze[(i,cols-1)] = WALL
+    for j in range(cols):
+        maze[(j,0)] = WALL
+        maze[(j,rows-1)] = WALL
+    
+    for i in range(rows):
+        for j in range(cols):
+            if maze[(i,j)] == EMPTY:
+                spaceCells.add((i,j))
+            if maze[(i,j)] == WALL:
+                walls.add((i,j))
+    
+    # Prim's algorithm to knock down walls.
