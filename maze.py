@@ -104,8 +104,8 @@ def generate(width, height, verbose=True):
     return lines
 
 if __name__ == '__main__':
-    width = input('Enter maze width: ')
-    heigth = input('Enter maze heigth: ')
+    width = int(input('Enter maze width: '))
+    heigth = int(input('Enter maze heigth: '))
 
     args = sys.argv[1:]
     if len(args) >= 1:
