@@ -86,4 +86,23 @@ def generate(width, height, verbose=True):
             if cs % 10 == 1:
                 print('%s/%s cells connected ...' % (cs, ss), file=sys.stderr)
     
-    #
+    # Insert character and goals.
+    TL = (1,1)
+    BR = (rows-2, cols-2)
+    if rows % 2 == 0:
+        BR = (BR[0]-1, BR[1])
+    if cols % 2 == 0:
+        BR = (BR[0], BR[1]-1)
+    
+    maze[TL] = AGENT
+    maze[BR] = GOAL
+
+    lines = []
+    for i in range(rows):
+        lines.append(''.join(maze[(i,j)] for j in range(cols)))
+    
+    return lines
+
+if __name__ == '__main__':
+    width = 9
+    heigth = 9
