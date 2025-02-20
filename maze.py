@@ -106,3 +106,22 @@ def generate(width, height, verbose=True):
 if __name__ == '__main__':
     width = 9
     heigth = 9
+
+    args = sys.argv[1:]
+    if len(args) >= 1:
+        width = int(args[0])
+    if len(args) >= 2:
+        heigth = int(args[1])
+    
+    if len(args) < 2:
+        print('Use command-line args to specify width and height.', file=sys.stderr)
+        print(' Odd numbers are suggested because of the walls.', file=sys.stderr)
+    print('Non-maze text is printed to stderr, so you\n can use > to pipe just the maze to a fil.\n', file=sys.stderr)
+
+    print('Generyting %sx%s maze (not including border)...\n' % (width, heigth), file=sys.stderr)
+
+    maze = generate(width, heigth)
+
+    print('Done.\n', file=sys.stderr)
+    
+    print('\n'.join(maze))
