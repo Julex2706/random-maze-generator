@@ -25,7 +25,7 @@ def print_maze(maze, width, height):
     for y in range(height):
         line = ''.join(maze[(x, y)] for x in range(width))
         print(line)
-        print("\n") # Blank line after the maze
+    print("\n") # Blank line after the maze
 
 def generate(width, height, verbose=True):
     # Add 2 for border walls
