@@ -173,5 +173,3 @@ if __name__ == '__main__':
     # Print final maze after generation
     clear_screen()
     print('\n'.join(maze))
-    print("\nDone.")
-    pass
