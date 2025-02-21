@@ -90,3 +90,25 @@ def generate(width, height, verbose=True):
             maze[(last_x, last_y)] = EMPTY
             print_maze(maze, width, height)
             time.sleep(1) # Pause for 1 second to visualize the move
+    
+    # Insert character and goals
+    maze[start] = AGENT
+    goal = (width-2, 1)
+    maze[goal] = GOAL
+
+    # Convert the maze dict to a list of strings for display
+    maze_lines = []
+    for y in range(height):
+        line = ''.join(maze[(x, y)] for x in range(width))
+        maze_lines.append(line)
+    
+    return maze_lines
+
+if __name__ == '__main__':
+    width = 9
+    height = 9
+
+    maze = generate(width, height)
+
+    # Print final maze after generation
+    print('\n'.join(maze))
