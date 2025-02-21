@@ -111,6 +111,48 @@ def generate(width, height, verbose=True):
     
     return maze_lines
 
+def solve_maze(maze, start, goal, width, height):
+    stack = [start]
+    visited = set()
+    parent = {}
+
+    while stack:
+        current = stack [-1]
+        x, y = current
+
+        if current == goal:
+            # We have found the goal, now retrace the path
+            path = []
+            while current != start:
+                path.append(current)
+                current = parent[current]
+            path.reverse()
+            return path
+        
+        if current not in visited:
+            visited.add(current)
+
+            # Check all  4 possible directions (up, right, down, left)
+            for dx, dy in DIRS:
+                nx, ny = x * dx, y + dy
+                if is_valid_move(nx, ny, width-1, height-1) and maze[(nx, ny)] == EMPTY and (nx, ny) not in visited:
+                    stack.append((nx, ny))
+                    parent[(nx, ny)] = current
+                    break
+                else:
+                    # Dead end, backtrack
+                    stack.pop()
+    return []
+
+def play_maze(maze, path, width, height):
+    for position in path:
+        maze[position] = VISITED # Mark the path with '•'
+        clear_screen()
+        print_maze(maze, width, height)
+        time.sleep(0.5) # Slow down the process to visualize the path
+
+    print("Maze solved!")
+
 if __name__ == '__main__':
     enter_size = True
     while enter_size:
@@ -173,3 +215,6 @@ if __name__ == '__main__':
     # Print final maze after generation
     clear_screen()
     print('\n'.join(maze))
+    input("Start maze.")
+    path = solve_maze(maze, (1, height-2), (width-2, 1), width, height)
+    play_maze(maze, path, width, height)
