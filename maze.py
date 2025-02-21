@@ -23,7 +23,7 @@ def print_maze(maze, width, height):
     # Print the maze state to the console
     clear_screen() # Clear the screen before printing the updated maze
     for y in range(height):
-        line = ''.join(maze[(x, y)] for x in range(width))
+        line = ' '.join(maze[(x, y)] for x in range(width))
         print(line)
     print("\n") # Blank line after the maze
 
@@ -57,6 +57,12 @@ def generate(width, height, verbose=True):
     start = (1, height-2)
     visited.add(start)
     stack.append(start)
+    maze[start] = VISITED
+
+    # Display the maze before generating
+
+    print_maze(maze, width, height)
+    time.sleep(5)
 
     # Start building the maze
     while stack:
@@ -70,7 +76,7 @@ def generate(width, height, verbose=True):
             nx, ny = x + dx * 2, y + dy * 2 # Check two steps ahead (ensures we don't overwrite walls)
         
             # Check if the next cell is within bounds and hasn't been visited
-            if is_valid_move(nx, ny, width, height) and (nx, ny) not in visited:
+            if is_valid_move(nx, ny, width-2, height-2) and (nx, ny) not in visited:
                 # Remove the wall between (x, y) and (nx, ny)
                 maze[(x + dx, y + dy)] = EMPTY
                 visited.add((nx, ny))
@@ -79,7 +85,7 @@ def generate(width, height, verbose=True):
                 # Set the current path cell to '•'
                 maze[(nx, ny)] = VISITED
                 print_maze(maze, width, height)
-                time.sleep(1) # Pause for 1 second to visualize the move
+                time.sleep(0.3) # Pause for 1 second to visualize the move
                 found = True
                 break # Found a valid move, break the loop and continue
         
@@ -89,7 +95,7 @@ def generate(width, height, verbose=True):
             last_x, last_y = stack.pop()
             maze[(last_x, last_y)] = EMPTY
             print_maze(maze, width, height)
-            time.sleep(1) # Pause for 1 second to visualize the move
+            time.sleep(0.3) # Pause for 1 second to visualize the move
     
     # Insert character and goals
     maze[start] = AGENT
@@ -99,16 +105,61 @@ def generate(width, height, verbose=True):
     # Convert the maze dict to a list of strings for display
     maze_lines = []
     for y in range(height):
-        line = ''.join(maze[(x, y)] for x in range(width))
+        line = ' '.join(maze[(x, y)] for x in range(width))
         maze_lines.append(line)
     
     return maze_lines
 
 if __name__ == '__main__':
-    width = 9
-    height = 9
+    enter_size = True
+    while enter_size:
+        enter_width = True
+        while enter_width:
+            clear_screen()
+            width = input("Enter width of maze: ")
+            if width.isdigit():
+                width = int(width)
+                break
+            else:
+                clear_screen()
+                print("You can only use numbers.")
+                time.sleep(1)
+                continue
+
+        enter_height = True
+        while enter_height:
+            clear_screen()
+            height = input("Enter height of maze: ")
+            if height.isdigit():
+                height = int(height)
+                break
+            else:
+                clear_screen()
+                print("You can only use numbers.")
+                time.sleep(1)
+                continue
+        
+        clear_screen()
+        sure = input("Are you sure, you want a %sx%s maze? " % (width, height))
+        while True:
+            if sure == 'yes' or sure == 'y':
+                enter_size = False
+                break
+            elif sure == 'no' or sure == 'n':
+                break
+            else:
+                clear_screen()
+                print("I didn't get that.")
+                time.sleep(1)
+                clear_screen()
+                sure = input("Are you sure, you want a %sx%s maze? " % (width, height))
+                pass
+                
+
 
     maze = generate(width, height)
 
     # Print final maze after generation
+    clear_screen()
     print('\n'.join(maze))
+    print("\nDone.")
