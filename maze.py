@@ -28,9 +28,11 @@ def print_maze(maze, width, height):
     print("\n") # Blank line after the maze
 
 def generate(width, height, verbose=True):
+    width = width * 2
+    height = height * 2
     # Add 2 for border walls
-    width += 2
-    height += 2
+    width += 1
+    height += 1
     maze = {}
 
     # Initialize grid with walls
@@ -60,9 +62,8 @@ def generate(width, height, verbose=True):
     maze[start] = VISITED
 
     # Display the maze before generating
-
     print_maze(maze, width, height)
-    time.sleep(5)
+    time.sleep(3) # Show the maze for 3 seconds before generating
 
     # Start building the maze
     while stack:
@@ -85,7 +86,7 @@ def generate(width, height, verbose=True):
                 # Set the current path cell to '•'
                 maze[(nx, ny)] = VISITED
                 print_maze(maze, width, height)
-                time.sleep(0.3) # Pause for 1 second to visualize the move
+                time.sleep(0.1) # Pause for 0.1 second to visualize the move
                 found = True
                 break # Found a valid move, break the loop and continue
         
@@ -95,7 +96,7 @@ def generate(width, height, verbose=True):
             last_x, last_y = stack.pop()
             maze[(last_x, last_y)] = EMPTY
             print_maze(maze, width, height)
-            time.sleep(0.3) # Pause for 1 second to visualize the move
+            time.sleep(0.1) # Pause for 0.1 second to visualize the move
     
     # Insert character and goals
     maze[start] = AGENT
@@ -119,6 +120,11 @@ if __name__ == '__main__':
             width = input("Enter width of maze: ")
             if width.isdigit():
                 width = int(width)
+                if width > 56:
+                    clear_screen()
+                    print("56 is maximum.")
+                    time.sleep(1)
+                    continue
                 break
             else:
                 clear_screen()
@@ -132,6 +138,11 @@ if __name__ == '__main__':
             height = input("Enter height of maze: ")
             if height.isdigit():
                 height = int(height)
+                if height > 22:
+                    clear_screen()
+                    print("22 is maximum.")
+                    time.sleep(1)
+                    continue
                 break
             else:
                 clear_screen()
@@ -163,3 +174,4 @@ if __name__ == '__main__':
     clear_screen()
     print('\n'.join(maze))
     print("\nDone.")
+    pass
